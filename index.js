@@ -17,7 +17,16 @@ server.listen(PORT, () => {
 });
 
 // Set socket io
-const io = socketio(server, { cors: { origin: '*' }});
+const io = socketio(server, {
+    cors: {
+        origin: '*',
+        methods: ["GET", "POST"],
+        transports: ['websocket', 'polling'],
+        credentials: true
+    },
+    allowEIO3: true,
+});
+
 io.on('connection', (socket) => {
     console.log('We have a new connection!!!');
 
