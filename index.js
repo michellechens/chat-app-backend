@@ -30,9 +30,9 @@ const io = socketio(server, {
 io.on('connection', (socket) => {
     console.log('We have a new connection!!!');
 
-    socket.on('join', ({ name, room }, callback) => {
-        console.log(name, room);
-        const { error, user } = addUser({ id: socket.id, name, room });
+    socket.on('join', ({ avatar, name, room }, callback) => {
+        console.log(avatar, name, room);
+        const { error, user } = addUser({ id: socket.id, avatar, name, room });
         if (error) return callback(error);
 
         socket.emit('message', { user: 'admin', text: `${user.name}, welcome to the room ${user.room}!` });
@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
 
     socket.on('sendMessage', (message, callback) => {
         const user = getUser(socket.id);
-        io.to(user.room).emit('message', { user: user.name, text: message });
+        io.to(user.room).emit('message', { avatar: user.avatar, user: user.name, text: message });
         callback();
     });
 

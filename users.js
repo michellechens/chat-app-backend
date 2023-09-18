@@ -1,6 +1,6 @@
 const users = [];
 
-const addUser = ({ id, name, room }) => {
+const addUser = ({ id, avatar, name, room }) => {
     name = name.trim().toLowerCase();
     room = room.trim().toLowerCase();
 
@@ -9,8 +9,9 @@ const addUser = ({ id, name, room }) => {
         return { error: 'Username is taken' };
     }
 
-    const user = { id, name, room };
+    const user = { id, avatar, name, room };
     users.push(user);
+
     return { user };
 };
 
