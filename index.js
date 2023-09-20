@@ -3,7 +3,7 @@ const router = require('./router');
 const cors = require('cors');
 const http = require('http');
 const socketio = require('socket.io');
-const { addUser, removeUser, getUser, getUserInRoom } = require('./users');
+const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
 
 const app = express();
 app.use(router);
@@ -39,7 +39,7 @@ io.on('connection', (socket) => {
         socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name}, has joined!` });
         socket.join(user.room);
 
-        io.to(user.room).emit('roomData', { room: user.room, users: getUserInRoom(user.room) });
+        io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
 
         callback();
     });
@@ -55,7 +55,7 @@ io.on('connection', (socket) => {
         const user = removeUser(socket.id);
         if (user) {
             io.to(user.room).emit('message', { user: 'admin', text: `${user.name} has left!` });
-            io.to(user.room).emit('roomData', { room: user.room, users: getUserInRoom(user.room) });
+            io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
         }
     });
 });
